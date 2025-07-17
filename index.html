@@ -499,20 +499,14 @@
         }
 
         // Event listeners
-        document.getElementById('currentEarnings').addEventListener('input', () => {
-            calculatePain();
-            updateProgress();
-        });
+document.getElementById('currentEarnings').addEventListener('input', calculatePain);
+document.getElementById('peakEarnings').addEventListener('input', calculatePain);
+document.getElementById('stagnationMonths').addEventListener('input', calculatePain);
 
-        document.getElementById('peakEarnings').addEventListener('input', () => {
-            calculatePain();
-            updateProgress();
-        });
-
-        document.getElementById('stagnationMonths').addEventListener('input', () => {
-            calculatePain();
-            updateProgress();
-        });
+// Aggiungi anche questi per trigger immediato
+document.getElementById('currentEarnings').addEventListener('keyup', calculatePain);
+document.getElementById('peakEarnings').addEventListener('keyup', calculatePain);
+document.getElementById('stagnationMonths').addEventListener('keyup', calculatePain);
 
         // Add event listeners to all form inputs
         document.querySelectorAll('input, select, textarea').forEach(input => {
