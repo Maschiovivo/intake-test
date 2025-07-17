@@ -429,13 +429,13 @@
             const peakEarnings = parseFloat(document.getElementById('peakEarnings').value) || 0;
             const stagnationMonths = parseInt(document.getElementById('stagnationMonths').value) || 0;
             
-            const monthlyLoss = Math.max(0, peakEarnings - currentEarnings);
+            const monthlyLoss = Math.max(0, (peakEarnings / 12) - (currentEarnings / 12));
             const totalLoss = monthlyLoss * stagnationMonths;
             const projectedLoss = monthlyLoss * 12;
             
-            document.getElementById('monthlyLoss').textContent = monthlyLoss.toLocaleString();
-            document.getElementById('totalLoss').textContent = totalLoss.toLocaleString();
-            document.getElementById('projectedLoss').textContent = projectedLoss.toLocaleString();
+            document.getElementById('monthlyLoss').textContent = Math.round(monthlyLoss).toLocaleString();
+            document.getElementById('totalLoss').textContent = Math.round(totalLoss).toLocaleString();
+            document.getElementById('projectedLoss').textContent = Math.round(projectedLoss).toLocaleString();
         }
 
         function setUrgency(value) {
@@ -498,57 +498,67 @@
             }
         }
 
-        // Event listeners
-document.getElementById('currentEarnings').addEventListener('input', calculatePain);
-document.getElementById('peakEarnings').addEventListener('input', calculatePain);
-document.getElementById('stagnationMonths').addEventListener('input', calculatePain);
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Event listeners for pain calculation
+            document.getElementById('currentEarnings').addEventListener('input', function() {
+                calculatePain();
+                updateProgress();
+            });
 
-// Aggiungi anche questi per trigger immediato
-document.getElementById('currentEarnings').addEventListener('keyup', calculatePain);
-document.getElementById('peakEarnings').addEventListener('keyup', calculatePain);
-document.getElementById('stagnationMonths').addEventListener('keyup', calculatePain);
+            document.getElementById('peakEarnings').addEventListener('input', function() {
+                calculatePain();
+                updateProgress();
+            });
 
-        // Add event listeners to all form inputs
-        document.querySelectorAll('input, select, textarea').forEach(input => {
-            input.addEventListener('change', updateProgress);
-            input.addEventListener('input', updateProgress);
+            document.getElementById('stagnationMonths').addEventListener('input', function() {
+                calculatePain();
+                updateProgress();
+            });
+
+            // Add event listeners to all form inputs
+            document.querySelectorAll('input, select, textarea').forEach(input => {
+                input.addEventListener('change', updateProgress);
+                input.addEventListener('input', updateProgress);
+            });
+
+            document.getElementById('intakeForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Ensure urgency is set
+                if (!document.getElementById('urgency').value) {
+                    alert('⚠️ Seleziona il livello di urgenza prima di continuare');
+                    return;
+                }
+                
+                const score = calculateQualificationScore();
+                showQualificationAlert(score);
+                
+                // Collect form data
+                const formData = new FormData(this);
+                const data = {};
+                for (let [key, value] of formData.entries()) {
+                    data[key] = value;
+                }
+                
+                // Add calculated values
+                data.qualificationScore = score;
+                data.monthlyLoss = document.getElementById('monthlyLoss').textContent;
+                data.totalLoss = document.getElementById('totalLoss').textContent;
+                data.projectedLoss = document.getElementById('projectedLoss').textContent;
+                
+                // Here you would typically send data to your backend
+                console.log('Form Data:', data);
+                
+                // Show success message
+                setTimeout(() => {
+                    alert('✅ Assessment completato con successo! I tuoi dati sono stati registrati.');
+                }, 500);
+            });
+
+            // Initialize
+            updateProgress();
         });
-document.getElementById('currentEarnings').addEventListener('input', calculatePain);
-document.getElementById('peakEarnings').addEventListener('input', calculatePain);
-document.getElementById('stagnationMonths').addEventListener('input', calculatePain);
-
-document.getElementById('intakeForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const score = calculateQualificationScore();
-    showQualificationAlert(score);
-        document.getElementById('intakeForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const score = calculateQualificationScore();
-            showQualificationAlert(score);
-            
-            // Collect form data
-            const formData = new FormData(this);
-            const data = {};
-            for (let [key, value] of formData.entries()) {
-                data[key] = value;
-            }
-            
-            // Add calculated values
-            data.qualificationScore = score;
-            data.monthlyLoss = document.getElementById('monthlyLoss').textContent;
-            data.totalLoss = document.getElementById('totalLoss').textContent;
-            data.projectedLoss = document.getElementById('projectedLoss').textContent;
-            
-            // Here you would typically send data to your backend
-            console.log('Form Data:', data);
-            
-            // Show success message
-            alert('✅ Assessment completato con successo! I tuoi dati sono stati registrati.');
-        });
-
-        // Initialize
-        updateProgress();
     </script>
 </body>
 </html>
