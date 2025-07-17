@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scheda Intake Interattiva - Replication Audit</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .form-container {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #2a5298;
+        }
+
+        .section h2 {
+            color: #2a5298;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            display: flex;
+            align-items: center;
+        }
+
+        .section h2::before {
+            content: '📊';
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #2a5298;
+            box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
+        }
+
+        .pain-calculator {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .pain-calculator h3 {
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .calc-result {
+            background: rgba(255,255,255,0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+
+        .emotional-trigger {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .urgency-scale {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+        }
+
+        .urgency-scale button {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 50%;
+            background: #e0e0e0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .urgency-scale button:hover {
+            background: #2a5298;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .urgency-scale button.active {
+            background: #2a5298;
+            color: white;
+            transform: scale(1.2);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2a5298, #667eea);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: 600;
+        }
+
+        .alert-danger {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+            }
+            
+            .form-container {
+                padding: 20px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 REPLICATION AUDIT INTENSIVO</h1>
+            <p>Scheda Intake Strategica - Preparazione Sessione</p>
+        </div>
+
+        <div class="form-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <form id="intakeForm">
+                <!-- SEZIONE A: BASELINE PERFORMANCE -->
+                <div class="section">
+                    <h2>Situazione Attuale</h2>
+                    
+                    <div class="form-group">
+                        <label for="currentEarnings">I tuoi guadagni/fatturato degli ultimi 12 mesi (€):</label>
+                        <input type="number" id="currentEarnings" name="currentEarnings" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="teamSize">Quante persone nel tuo team/territorio:</label>
+                        <input type="number" id="teamSize" name="teamSize" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="activePercentage">Percentuale di chi produce davvero risultati (%):</label>
+                        <input type="number" id="activePercentage" name="activePercentage" min="0" max="100" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="stagnationMonths">Da quanti mesi sei fermo a questi livelli:</label>
+                        <input type="number" id="stagnationMonths" name="stagnationMonths" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="peakEarnings">Il tuo risultato più alto (€/mese):</label>
+                        <input type="number" id="peakEarnings" name="peakEarnings" required>
+                    </div>
+
+                    <div class="pain-calculator">
+                        <h3>💰 CALCOLATORE COSTO OPPORTUNITÀ</h3>
+                        <div class="calc-result">
+                            <div>Perdita mensile stimata: €<span id="monthlyLoss">0</span></div>
+                            <div>Perdita totale accumulata: €<span id="totalLoss">0</span></div>
+                            <div>Perdita proiettata 12 mesi: €<span id="projectedLoss">0</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SEZIONE B: PROFILO LEADERSHIP -->
+                <div class="section">
+                    <h2>Il Tuo Stile di Leadership</h2>
+                    
+                    <div class="form-group">
+                        <label for="decisionStyle">Quando prendi decisioni importanti nel team, cosa guida principalmente la tua scelta?</label>
+                        <select id="decisionStyle" name="decisionStyle" required>
+                            <option value="">Seleziona...</option>
+                            <option value="data">I numeri e le statistiche</option>
+                            <option value="intuition">La mia esperienza e intuito</option>
+                            <option value="consensus">Il parere della squadra</option>
+                            <option value="external">Le pressioni esterne e le scadenze</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="underperformance">Un membro del team produce costantemente la metà degli altri. La tua reazione istintiva è:</label>
+                        <select id="underperformance" name="underperformance" required>
+                            <option value="">Seleziona...</option>
+                            <option value="training">Aumentare la formazione individuale</option>
+                            <option value="confrontation">Confronto diretto e dare un ultimatum</option>
+                            <option value="rolechange">Cambiare il suo ruolo</option>
+                            <option value="replacement">Sostituirlo con qualcuno di nuovo</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="communication">Quando spieghi le strategie al team, usi principalmente:</label>
+                        <select id="communication" name="communication" required>
+                            <option value="">Seleziona...</option>
+                            <option value="visual">Presentazioni e grafici</option>
+                            <option value="stories">Esempi pratici e storie</option>
+                            <option value="discussion">Discussioni di gruppo</option>
+                            <option value="procedures">Procedure precise passo-passo</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- SEZIONE C: BLOCCHI NASCOSTI -->
+                <div class="section">
+                    <h2>I Tuoi Blocchi Nascosti</h2>
+                    
+                    <div class="form-group">
+                        <label for="delegationFeel">Quando pensi di affidare le tue competenze chiave ad altri, che sensazione provi?</label>
+                        <select id="delegationFeel" name="delegationFeel" required>
+                            <option value="">Seleziona...</option>
+                            <option value="excitement">Entusiasmo ed energia</option>
+                            <option value="control">Tensione e voglia di controllo</option>
+                            <option value="anxiety">Ansia e preoccupazione</option>
+                            <option value="neutral">Non mi cambia nulla</option>
+                        </select>
+                    </div>
+
+                    <div class="emotional-trigger">
+                        <h3>🎭 TRIGGER EMOTIVI</h3>
+                        <div class="form-group">
+                            <label for="familyImpact" style="color: white;">Cosa penserà tua moglie/marito se tra 1 anno sei ancora qui?</label>
+                            <textarea id="familyImpact" name="familyImpact" rows="3" placeholder="Descrivi la situazione..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mainValue">Completa la frase: "La mia importanza nel team è principalmente..."</label>
+                        <select id="mainValue" name="mainValue" required>
+                            <option value="">Seleziona...</option>
+                            <option value="example">Essere l'esempio da seguire</option>
+                            <option value="solver">Risolvere i problemi difficili</option>
+                            <option value="motivator">Motivare e dare la carica</option>
+                            <option value="organizer">Organizzare e pianificare</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- SEZIONE D: PRIORITÀ -->
+                <div class="section">
+                    <h2>Le Tue Priorità</h2>
+                    
+                    <div class="form-group">
+                        <label for="urgency">Su una scala da 1 a 10, quanto è urgente sbloccare questa situazione?</label>
+                        <div class="urgency-scale">
+                            <button type="button" onclick="setUrgency(1)">1</button>
+                            <button type="button" onclick="setUrgency(2)">2</button>
+                            <button type="button" onclick="setUrgency(3)">3</button>
+                            <button type="button" onclick="setUrgency(4)">4</button>
+                            <button type="button" onclick="setUrgency(5)">5</button>
+                            <button type="button" onclick="setUrgency(6)">6</button>
+                            <button type="button" onclick="setUrgency(7)">7</button>
+                            <button type="button" onclick="setUrgency(8)">8</button>
+                            <button type="button" onclick="setUrgency(9)">9</button>
+                            <button type="button" onclick="setUrgency(10)">10</button>
+                        </div>
+                        <input type="hidden" id="urgency" name="urgency" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="investment">Quanto investiresti per risolvere definitivamente questo problema?</label>
+                        <select id="investment" name="investment" required>
+                            <option value="">Seleziona...</option>
+                            <option value="500-1000">€500-1.000</option>
+                            <option value="1000-3000">€1.000-3.000</option>
+                            <option value="3000-5000">€3.000-5.000</option>
+                            <option value="5000+">Oltre €5.000</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="desiredResult">Tra 90 giorni, quale risultato ti farebbe dire "Ne è valsa la pena"?</label>
+                        <textarea id="desiredResult" name="desiredResult" rows="4" placeholder="Descrivi in 2-3 frasi concrete..." required></textarea>
+                    </div>
+                </div>
+
+                <div id="qualificationAlert" class="alert hidden"></div>
+
+                <button type="submit" class="submit-btn">🚀 COMPLETA L'ASSESSMENT</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let currentUrgency = 0;
+        let formData = {};
+
+        function updateProgress() {
+            const form = document.getElementById('intakeForm');
+            const inputs = form.querySelectorAll('input[required], select[required], textarea[required]');
+            let filled = 0;
+            
+            inputs.forEach(input => {
+                if (input.value.trim() !== '') {
+                    filled++;
+                }
+            });
+            
+            const progress = (filled / inputs.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function calculatePain() {
+            const currentEarnings = parseFloat(document.getElementById('currentEarnings').value) || 0;
+            const peakEarnings = parseFloat(document.getElementById('peakEarnings').value) || 0;
+            const stagnationMonths = parseInt(document.getElementById('stagnationMonths').value) || 0;
+            
+            const monthlyLoss = Math.max(0, peakEarnings - currentEarnings);
+            const totalLoss = monthlyLoss * stagnationMonths;
+            const projectedLoss = monthlyLoss * 12;
+            
+            document.getElementById('monthlyLoss').textContent = monthlyLoss.toLocaleString();
+            document.getElementById('totalLoss').textContent = totalLoss.toLocaleString();
+            document.getElementById('projectedLoss').textContent = projectedLoss.toLocaleString();
+        }
+
+        function setUrgency(value) {
+            currentUrgency = value;
+            document.getElementById('urgency').value = value;
+            
+            // Update visual feedback
+            const buttons = document.querySelectorAll('.urgency-scale button');
+            buttons.forEach((btn, index) => {
+                btn.classList.toggle('active', index + 1 <= value);
+            });
+            
+            updateProgress();
+        }
+
+        function calculateQualificationScore() {
+            const urgency = parseInt(document.getElementById('urgency').value) || 0;
+            const investment = document.getElementById('investment').value;
+            const currentEarnings = parseFloat(document.getElementById('currentEarnings').value) || 0;
+            const stagnationMonths = parseInt(document.getElementById('stagnationMonths').value) || 0;
+            
+            let investmentScore = 0;
+            switch(investment) {
+                case '500-1000': investmentScore = 5; break;
+                case '1000-3000': investmentScore = 7; break;
+                case '3000-5000': investmentScore = 9; break;
+                case '5000+': investmentScore = 10; break;
+            }
+            
+            const painScore = Math.min(10, stagnationMonths / 2);
+            const earningsScore = Math.min(10, currentEarnings / 5000);
+            
+            const totalScore = (urgency * 0.3) + (investmentScore * 0.25) + (painScore * 0.25) + (earningsScore * 0.2);
+            
+            return Math.round(totalScore);
+        }
+
+        function showQualificationAlert(score) {
+            const alertDiv = document.getElementById('qualificationAlert');
+            alertDiv.classList.remove('hidden');
+            
+            if (score >= 8) {
+                alertDiv.className = 'alert alert-success';
+                alertDiv.innerHTML = `
+                    <strong>🎯 PROFILO ALTO POTENZIALE (Score: ${score}/10)</strong><br>
+                    Sei un candidato ideale per risultati straordinari! La tua combinazione di urgenza, investimento e situazione indica alte probabilità di successo.
+                `;
+            } else if (score >= 6) {
+                alertDiv.className = 'alert alert-warning';
+                alertDiv.innerHTML = `
+                    <strong>⚠️ PROFILO MEDIO POTENZIALE (Score: ${score}/10)</strong><br>
+                    Hai buone possibilità di successo, ma potrebbe essere necessario aumentare l'urgenza o l'investimento per risultati ottimali.
+                `;
+            } else {
+                alertDiv.className = 'alert alert-danger';
+                alertDiv.innerHTML = `
+                    <strong>🚨 PROFILO BASSO POTENZIALE (Score: ${score}/10)</strong><br>
+                    Potrebbe essere necessario riconsiderare il timing o l'approccio. La situazione attuale potrebbe non essere ottimale per iniziare un percorso intensivo.
+                `;
+            }
+        }
+
+        // Event listeners
+        document.getElementById('currentEarnings').addEventListener('input', () => {
+            calculatePain();
+            updateProgress();
+        });
+
+        document.getElementById('peakEarnings').addEventListener('input', () => {
+            calculatePain();
+            updateProgress();
+        });
+
+        document.getElementById('stagnationMonths').addEventListener('input', () => {
+            calculatePain();
+            updateProgress();
+        });
+
+        // Add event listeners to all form inputs
+        document.querySelectorAll('input, select, textarea').forEach(input => {
+            input.addEventListener('change', updateProgress);
+            input.addEventListener('input', updateProgress);
+        });
+
+        document.getElementById('intakeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const score = calculateQualificationScore();
+            showQualificationAlert(score);
+            
+            // Collect form data
+            const formData = new FormData(this);
+            const data = {};
+            for (let [key, value] of formData.entries()) {
+                data[key] = value;
+            }
+            
+            // Add calculated values
+            data.qualificationScore = score;
+            data.monthlyLoss = document.getElementById('monthlyLoss').textContent;
+            data.totalLoss = document.getElementById('totalLoss').textContent;
+            data.projectedLoss = document.getElementById('projectedLoss').textContent;
+            
+            // Here you would typically send data to your backend
+            console.log('Form Data:', data);
+            
+            // Show success message
+            alert('✅ Assessment completato con successo! I tuoi dati sono stati registrati.');
+        });
+
+        // Initialize
+        updateProgress();
+    </script>
+</body>
+</html>
