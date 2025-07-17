@@ -513,7 +513,14 @@ document.getElementById('stagnationMonths').addEventListener('keyup', calculateP
             input.addEventListener('change', updateProgress);
             input.addEventListener('input', updateProgress);
         });
+document.getElementById('currentEarnings').addEventListener('input', calculatePain);
+document.getElementById('peakEarnings').addEventListener('input', calculatePain);
+document.getElementById('stagnationMonths').addEventListener('input', calculatePain);
 
+document.getElementById('intakeForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const score = calculateQualificationScore();
+    showQualificationAlert(score);
         document.getElementById('intakeForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
