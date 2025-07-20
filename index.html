@@ -1010,8 +1010,45 @@
                 
                 console.log('Dati completi assessment:', formData);
                 
-                // INVIO AUTOMATICO A GOOGLE SHEETS
-                sendToGoogleSheets(formData);
+                // SOLUZIONI ALTERNATIVE GARANTITE
+                var formattedData = createFormattedData(formData);
+                var emailData = createEmailData(formData);
+                
+                // Mostra opzioni all'utente
+                var userChoice = confirm(
+                    '✅ ASSESSMENT COMPLETATO!\n\n' +
+                    '📊 Score: ' + score + '/10\n' +
+                    '🎯 Profilo: ' + (formData.behavioralProfile || 'MISTO') + '\n\n' +
+                    '📋 SCEGLI COME SALVARE I DATI:\n\n' +
+                    '✅ OK = Copia dati per Google Sheets\n' +
+                    '❌ ANNULLA = Apri email precompilata'
+                );
+                
+                if (userChoice) {
+                    // Opzione 1: Copia-incolla per Google Sheets
+                    navigator.clipboard.writeText(formattedData).then(function() {
+                        alert('📋 DATI COPIATI!\n\n' +
+                              '1. Apri il tuo Google Sheets\n' +
+                              '2. Seleziona la prima cella vuota\n' +
+                              '3. Premi Ctrl+V (o Cmd+V)\n' +
+                              '4. I dati si incolleranno automaticamente!\n\n' +
+                              '✅ Score cliente: ' + score + '/10');
+                    }).catch(function() {
+                        // Fallback se clipboard non funziona
+                        var dataWindow = window.open('', '_blank');
+                        dataWindow.document.write('<h3>📋 COPIA QUESTI DATI NEL TUO GOOGLE SHEETS:</h3>');
+                        dataWindow.document.write('<textarea style="width:100%;height:200px;">' + formattedData + '</textarea>');
+                        dataWindow.document.write('<p><strong>Istruzioni:</strong><br>1. Seleziona tutto il testo<br>2. Copia (Ctrl+C)<br>3. Incolla nel Google Sheets (Ctrl+V)</p>');
+                    });
+                } else {
+                    // Opzione 2: Email precompilata
+                    var mailtoLink = 'mailto:?subject=' + encodeURIComponent(emailData.subject) + 
+                                   '&body=' + encodeURIComponent(emailData.body);
+                    window.open(mailtoLink);
+                    alert('📧 EMAIL PRECOMPILATA APERTA!\n\n' +
+                          'Aggiungi il tuo indirizzo email e invia.\n' +
+                          'Tutti i dati del prospect sono già formattati!');
+                }
                 
                 // Alert di conferma
                 setTimeout(function() {
