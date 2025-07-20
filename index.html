@@ -558,7 +558,7 @@
     <script>
         // Funzione per inviare dati automaticamente a Google Sheets
         function sendToGoogleSheets(formData) {
-            var googleFormURL = https://docs.google.com/forms/d/e/1FAIpQLSdwTX_fI9M6qLy0xHYQ_wIxsKMcGpErUllmT6-crymzGxI55g/viewform?usp=dialog;
+            var googleFormURL = 'https://docs.google.com/forms/d/e/1FAIpQLSdR9m_vW8xQ2Nz7A6bK3yP5tM1cL9jF4gH8sV0/formResponse';
             
             var formParams = new URLSearchParams();
             formParams.append('entry.1087894298', formData.nome || '');
@@ -590,7 +590,7 @@
             formParams.append('entry.649307861', formData.qualificationScore || '');
             formParams.append('entry.1851740526', new Date().toISOString());
             
-            // Invio dati
+            // Invio dati CON DEBUG COMPLETO
             fetch(googleFormURL, {
                 method: 'POST',
                 mode: 'no-cors',
@@ -599,9 +599,12 @@
                 },
                 body: formParams
             }).then(() => {
-                console.log('✅ Dati inviati automaticamente a Google Sheets');
+                console.log('✅ Richiesta inviata - Controlla Google Sheets');
+                alert('🔧 DEBUG: Richiesta inviata a Google. Controlla il foglio Sheets in 30 secondi.');
             }).catch(error => {
-                console.log('ℹ️ Dati salvati localmente:', formData);
+                console.log('❌ ERRORE:', error);
+                alert('❌ ERRORE invio: ' + error.message + '\n\n📋 Dati salvati localmente.');
+                console.log('📊 DATI COMPLETI:', formData);
             });
         }
 
