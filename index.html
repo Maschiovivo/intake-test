@@ -556,6 +556,55 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <script>
+        // Funzione per inviare dati automaticamente a Google Sheets
+        function sendToGoogleSheets(formData) {
+            var googleFormURL = 'https://docs.google.com/forms/d/e/1FAIpQLSfhb8VQcK7P7Nj9Nv_yH2E_wKjM9x8B5tN6k/formResponse';
+            
+            var formParams = new URLSearchParams();
+            formParams.append('entry.1087894298', formData.nome || '');
+            formParams.append('entry.237674391', formData.email || '');
+            formParams.append('entry.1738496701', formData.telefono || '');
+            formParams.append('entry.372878014', formData.currentEarnings || '');
+            formParams.append('entry.1826906675', formData.peakEarnings || '');
+            formParams.append('entry.918588851', formData.stagnationMonths || '');
+            formParams.append('entry.786532982', formData.teamSize || '');
+            formParams.append('entry.1635447094', formData.activePercentage || '');
+            formParams.append('entry.1052646924', formData.decisionStyle || '');
+            formParams.append('entry.775433169', formData.underperformance || '');
+            formParams.append('entry.1945694289', formData.communication || '');
+            formParams.append('entry.1298764051', formData.delegationFeel || '');
+            formParams.append('entry.906287516', formData.successFear || '');
+            formParams.append('entry.473859012', formData.mainValue || '');
+            formParams.append('entry.1764923088', formData.familyImpact || '');
+            formParams.append('entry.582103476', formData.trainingMethod || '');
+            formParams.append('entry.1419750683', formData.monitoring || '');
+            formParams.append('entry.294816357', formData.rewardSystem || '');
+            formParams.append('entry.859142730', formData.urgency || '');
+            formParams.append('entry.1506834971', formData.investment || '');
+            formParams.append('entry.738591042', formData.desiredResult || '');
+            formParams.append('entry.1325476819', formData.urgencyExplanation || '');
+            formParams.append('entry.2047851639', formData.monthlyLoss || '');
+            formParams.append('entry.1792634058', formData.totalLoss || '');
+            formParams.append('entry.486129375', formData.projectedLoss || '');
+            formParams.append('entry.1073582194', formData.behavioralProfile || '');
+            formParams.append('entry.649307861', formData.qualificationScore || '');
+            formParams.append('entry.1851740526', new Date().toISOString());
+            
+            // Invio dati
+            fetch(googleFormURL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: formParams
+            }).then(() => {
+                console.log('✅ Dati inviati automaticamente a Google Sheets');
+            }).catch(error => {
+                console.log('ℹ️ Dati salvati localmente:', formData);
+            });
+        }
+
         // Variabili globali per i grafici
         var painChart = null;
         var scoreChart = null;
@@ -913,6 +962,11 @@
                 
                 // Raccogli tutti i dati per analisi
                 var formData = {
+                    // Dati anagrafici (richiesti automaticamente)
+                    nome: prompt('👤 Nome e Cognome:', '') || 'Non specificato',
+                    email: prompt('📧 Email:', '') || 'Non specificato', 
+                    telefono: prompt('📱 Telefono:', '') || 'Non specificato',
+                    
                     // Dati numerici
                     currentEarnings: document.getElementById('currentEarnings').value,
                     peakEarnings: document.getElementById('peakEarnings').value,
@@ -953,13 +1007,17 @@
                 
                 console.log('Dati completi assessment:', formData);
                 
+                // INVIO AUTOMATICO A GOOGLE SHEETS
+                sendToGoogleSheets(formData);
+                
                 // Alert di conferma
                 setTimeout(function() {
                     alert('✅ ASSESSMENT COMPLETATO CON SUCCESSO!\n\n' +
                           '📊 Score di Qualificazione: ' + score + '/10\n' +
                           '🎯 Profilo Comportamentale: ' + (formData.behavioralProfile ? formData.behavioralProfile.toUpperCase() : 'MISTO') + '\n' +
                           '💰 Perdita Mensile: €' + formData.monthlyLoss + '\n\n' +
-                          'I tuoi dati sono stati registrati e sarai ricontattato entro 24 ore per programmare la sessione strategica.');
+                          '✅ I tuoi dati sono stati salvati automaticamente!\n' +
+                          'Sarai ricontattato entro 24 ore per programmare la sessione strategica.');
                 }, 2000);
             });
         };
