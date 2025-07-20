@@ -1026,20 +1026,20 @@
                 
                 if (userChoice) {
                     // Opzione 1: Copia-incolla per Google Sheets
-                    navigator.clipboard.writeText(formattedData).then(function() {
-                        alert('📋 DATI COPIATI!\n\n' +
-                              '1. Apri il tuo Google Sheets\n' +
-                              '2. Seleziona la prima cella vuota\n' +
-                              '3. Premi Ctrl+V (o Cmd+V)\n' +
-                              '4. I dati si incolleranno automaticamente!\n\n' +
-                              '✅ Score cliente: ' + score + '/10');
-                    }).catch(function() {
-                        // Fallback se clipboard non funziona
-                        var dataWindow = window.open('', '_blank');
-                        dataWindow.document.write('<h3>📋 COPIA QUESTI DATI NEL TUO GOOGLE SHEETS:</h3>');
-                        dataWindow.document.write('<textarea style="width:100%;height:200px;">' + formattedData + '</textarea>');
-                        dataWindow.document.write('<p><strong>Istruzioni:</strong><br>1. Seleziona tutto il testo<br>2. Copia (Ctrl+C)<br>3. Incolla nel Google Sheets (Ctrl+V)</p>');
-                    });
+                    if (navigator.clipboard) {
+                        navigator.clipboard.writeText(formattedData).then(function() {
+                            alert('📋 DATI COPIATI!\n\n' +
+                                  '1. Apri il tuo Google Sheets\n' +
+                                  '2. Seleziona la prima cella vuota\n' +
+                                  '3. Premi Ctrl+V (o Cmd+V)\n' +
+                                  '4. I dati si incolleranno automaticamente!\n\n' +
+                                  '✅ Score cliente: ' + score + '/10');
+                        }).catch(function() {
+                            showDataInNewWindow(formattedData, score);
+                        });
+                    } else {
+                        showDataInNewWindow(formattedData, score);
+                    }
                 } else {
                     // Opzione 2: Email precompilata
                     var mailtoLink = 'mailto:?subject=' + encodeURIComponent(emailData.subject) + 
@@ -1048,6 +1048,23 @@
                     alert('📧 EMAIL PRECOMPILATA APERTA!\n\n' +
                           'Aggiungi il tuo indirizzo email e invia.\n' +
                           'Tutti i dati del prospect sono già formattati!');
+                }
+                
+                // Funzione di fallback per mostrare dati
+                function showDataInNewWindow(data, score) {
+                    var dataWindow = window.open('', '_blank', 'width=800,height=600');
+                    dataWindow.document.write(`
+                        <h2>📋 DATI PROSPECT - Score: ${score}/10</h2>
+                        <p><strong>Istruzioni:</strong></p>
+                        <ol>
+                            <li>Seleziona tutto il testo nel box sotto</li>
+                            <li>Copia (Ctrl+C)</li>
+                            <li>Vai al tuo Google Sheets</li>
+                            <li>Incolla (Ctrl+V) in una cella vuota</li>
+                        </ol>
+                        <textarea style="width:100%;height:400px; font-family:monospace;">${data}</textarea>
+                        <p><em>I dati sono separati da TAB per allineamento automatico nelle colonne.</em></p>
+                    `);
                 }
                 
                 // Alert di conferma
