@@ -3,315 +3,290 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scheda Intake - Replication Audit</title>
+    <title>Assessment Leadership - Analisi Crescita Bloccata</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            font-family: 'Inter', Arial, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            color: #1e293b;
+            line-height: 1.6;
             min-height: 100vh;
-            padding: 20px;
         }
-
+        
         .container {
-            max-width: 900px;
+            max-width: 1200px;
             margin: 0 auto;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
-            color: white;
-            padding: 40px 30px;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: 2.2em;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-
-        .header p {
-            font-size: 1.1em;
-            opacity: 0.9;
-        }
-
-        .form-container {
-            padding: 40px;
-        }
-
-        .section {
-            margin-bottom: 35px;
-            padding: 30px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            border-left: 4px solid #3498db;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-
-        .section h2 {
-            color: #2c3e50;
-            margin-bottom: 25px;
-            font-size: 1.5em;
-            font-weight: 600;
-        }
-
-        .form-group {
-            margin-bottom: 25px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: 600;
-            color: #2c3e50;
-            font-size: 1.05em;
-        }
-
-        .input-type {
-            display: inline-block;
-            background: #ecf0f1;
-            color: #7f8c8d;
-            font-size: 0.85em;
-            padding: 3px 8px;
-            border-radius: 4px;
-            margin-left: 8px;
-            font-weight: 500;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: all 0.3s ease;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #3498db;
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-        }
-
-        .pain-calculator {
-            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-            color: white;
-            padding: 25px;
-            border-radius: 8px;
-            margin: 25px 0;
-            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
-        }
-
-        .pain-calculator h3 {
-            margin-bottom: 15px;
-            font-size: 1.3em;
-        }
-
-        .calc-result {
-            background: rgba(255,255,255,0.2);
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 15px;
-            font-size: 1.1em;
-            font-weight: 600;
-        }
-
-        .urgency-scale {
-            display: flex;
-            justify-content: space-between;
-            margin: 10px 0;
-            flex-wrap: wrap;
-        }
-
-        .urgency-scale button {
-            width: 40px;
-            height: 40px;
-            border: none;
-            border-radius: 50%;
-            background: #e0e0e0;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            margin: 2px;
-        }
-
-        .urgency-scale button:hover {
-            background: #3498db;
-            color: white;
-            transform: scale(1.1);
-        }
-
-        .urgency-scale button.active {
-            background: #3498db;
-            color: white;
-            transform: scale(1.2);
-        }
-
-        .submit-btn {
-            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
-            color: white;
-            padding: 16px 40px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-
-        .alert {
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-            font-weight: 600;
-        }
-
-        .alert-danger {
-            background: #f8d7da;
-            border: 1px solid #f5c6cb;
-            color: #721c24;
-        }
-
-        .alert-warning {
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
-            color: #856404;
-        }
-
-        .alert-success {
-            background: #d4edda;
-            border: 1px solid #c3e6cb;
-            color: #155724;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        .show-report {
-            display: block !important;
-            animation: slideIn 0.5s ease-out;
-        }
-
-        .chart-container {
-            position: relative;
-            height: 200px;
-            margin: 20px 0;
-        }
-
-        .progress-container {
-            background: rgba(255,255,255,0.2);
-            border-radius: 8px;
-            padding: 15px;
-            margin: 15px 0;
-        }
-
-        .progress-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 10px 0;
-        }
-
-        .progress-bar-visual {
-            flex: 1;
-            height: 8px;
-            background: rgba(255,255,255,0.3);
-            border-radius: 4px;
-            margin: 0 15px;
-            overflow: hidden;
-        }
-
-        .progress-fill-visual {
-            height: 100%;
-            background: #ffffff;
-            border-radius: 4px;
-            transition: width 0.3s ease;
-        }
-
-        .behavioral-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .behavioral-card {
-            background: white;
             padding: 20px;
-            border-radius: 8px;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
         }
-
-        .behavioral-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .behavioral-card.active {
-            background: #3498db;
+        
+        .header {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
             color: white;
-            transform: scale(1.05);
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
         }
-
-        .score-visual {
+        
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: -0.025em;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e40af;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-icon {
+            width: 24px;
+            height: 24px;
+            background: #3b82f6;
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            margin: 20px auto;
-            font-size: 2em;
-            font-weight: bold;
             color: white;
-            position: relative;
+            font-weight: 600;
         }
-
-        .score-high { background: linear-gradient(135deg, #27ae60, #2ecc71); }
-        .score-medium { background: linear-gradient(135deg, #f39c12, #e67e22); }
-        .score-low { background: linear-gradient(135deg, #e74c3c, #c0392b); }
-
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            font-family: 'Inter', Arial, sans-serif;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .radio-group {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .radio-option {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: #f9fafb;
+        }
+        
+        .radio-option:hover {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+        
+        .radio-option input[type="radio"] {
+            margin-right: 12px;
+            accent-color: #3b82f6;
+        }
+        
+        .radio-option.selected {
+            border-color: #3b82f6;
+            background: #eff6ff;
+            color: #1e40af;
+            font-weight: 500;
+        }
+        
+        .slider-container {
+            margin: 20px 0;
+        }
+        
+        .slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: #e5e7eb;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #3b82f6;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .slider-value {
+            text-align: center;
+            margin-top: 10px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #1e40af;
+        }
+        
+        .chart-container {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .chart-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .metric-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e40af;
+            margin-bottom: 5px;
+        }
+        
+        .metric-label {
+            font-size: 0.9rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+        
+        .warning {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            color: #92400e;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: 500;
+        }
+        
+        .success {
+            background: #d1fae5;
+            border: 1px solid #10b981;
+            color: #065f46;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: 500;
+        }
+        
+        .cta-section {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 16px;
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .cta-button {
+            background: white;
+            color: #1e40af;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Inter', Arial, sans-serif;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
         @media (max-width: 768px) {
             .container {
-                margin: 10px;
-            }
-            
-            .form-container {
-                padding: 20px;
-            }
-            
-            .header {
-                padding: 20px;
+                padding: 15px;
             }
             
             .header h1 {
-                font-size: 1.8em;
+                font-size: 2rem;
             }
-
-            .urgency-scale {
-                justify-content: center;
+            
+            .section {
+                padding: 20px;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -319,765 +294,457 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🎯 REPLICATION AUDIT INTENSIVO</h1>
-            <p>Scheda Intake Strategica - Preparazione Sessione</p>
+            <h1>Assessment Leadership Strategico</h1>
+            <p>Analisi Pre-Sessione - Diagnosi Crescita Bloccata</p>
         </div>
 
-        <div class="form-container">
-            <form id="intakeForm">
-                <!-- SEZIONE A: SITUAZIONE ATTUALE -->
-                <div class="section">
-                    <h2>📊 Situazione Attuale</h2>
-                    
-                    <div class="form-group">
-                        <label>I tuoi guadagni/fatturato degli ultimi 12 mesi <span class="input-type">Numero in €</span></label>
-                        <input type="number" id="currentEarnings" placeholder="es. 65000" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Il tuo risultato più alto nella carriera <span class="input-type">Numero in €/anno</span></label>
-                        <input type="number" id="peakEarnings" placeholder="es. 85000" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Da quanti mesi sei fermo a questi livelli <span class="input-type">Numero mesi</span></label>
-                        <input type="number" id="stagnationMonths" placeholder="es. 8" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Quante persone nel tuo team/territorio <span class="input-type">Numero persone</span></label>
-                        <input type="number" id="teamSize" placeholder="es. 25" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Percentuale di chi produce davvero risultati <span class="input-type">Numero 0-100%</span></label>
-                        <input type="number" id="activePercentage" min="0" max="100" placeholder="es. 35" required>
-                    </div>
-
-                    <div class="pain-calculator">
-                        <h3>💰 CALCOLATORE COSTO OPPORTUNITÀ</h3>
-                        <div class="calc-result">
-                            <div>Perdita mensile stimata: €<span id="monthlyLoss">0</span></div>
-                            <div>Perdita totale accumulata: €<span id="totalLoss">0</span></div>
-                            <div>Perdita proiettata 12 mesi: €<span id="projectedLoss">0</span></div>
-                        </div>
-                        <div class="chart-container">
-                            <canvas id="painChart"></canvas>
-                        </div>
-                    </div>
+        <div class="section">
+            <div class="section-title">
+                <div class="section-icon">1</div>
+                Situazione Attuale - Numeri Concreti
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">I tuoi guadagni/fatturato medio degli ultimi 6 mesi (€)</label>
+                <input type="number" class="form-input" id="currentRevenue" placeholder="Es: 8500" onchange="updateCharts()">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Fatturato team/territorio medio mensile (€)</label>
+                <input type="number" class="form-input" id="teamRevenue" placeholder="Es: 45000" onchange="updateCharts()">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Numero persone nel tuo team/territorio</label>
+                <input type="number" class="form-input" id="teamSize" placeholder="Es: 12" onchange="updateCharts()">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Da quanti mesi consecutivi sei fermo a questi livelli?</label>
+                <div class="slider-container">
+                    <input type="range" min="1" max="24" value="6" class="slider" id="stagnationMonths" onchange="updateCharts()">
+                    <div class="slider-value"><span id="stagnationValue">6</span> mesi</div>
                 </div>
+            </div>
 
-                <!-- SEZIONE B: PROFILO LEADERSHIP -->
-                <div class="section">
-                    <h2>🎯 Il Tuo Stile di Leadership</h2>
-                    
-                    <div class="form-group">
-                        <label>Quando prendi decisioni importanti nel team, cosa guida principalmente la tua scelta? <span class="input-type">Selezione singola</span></label>
-                        <select id="decisionStyle" name="decisionStyle" required>
-                            <option value="">Seleziona la tua risposta...</option>
-                            <option value="data">I numeri e le statistiche</option>
-                            <option value="intuition">La mia esperienza e intuito</option>
-                            <option value="consensus">Il parere della squadra</option>
-                            <option value="external">Le pressioni esterne e le scadenze</option>
-                        </select>
-                    </div>
+            <div class="chart-container">
+                <div class="chart-title">Analisi Stagnazione Temporale</div>
+                <canvas id="stagnationChart" width="400" height="200"></canvas>
+            </div>
+        </div>
 
-                    <div class="form-group">
-                        <label>Un membro del team produce costantemente la metà degli altri. La tua reazione istintiva è: <span class="input-type">Selezione singola</span></label>
-                        <select id="underperformance" name="underperformance" required>
-                            <option value="">Seleziona la tua risposta...</option>
-                            <option value="training">Aumentare la formazione individuale</option>
-                            <option value="confrontation">Confronto diretto e dare un ultimatum</option>
-                            <option value="rolechange">Cambiare il suo ruolo</option>
-                            <option value="replacement">Sostituirlo con qualcuno di nuovo</option>
-                        </select>
-                    </div>
+        <div class="section">
+            <div class="section-title">
+                <div class="section-icon">2</div>
+                Il Tuo Momento di Successo Massimo
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Nel tuo periodo migliore, quanto guadagnavi/fatturavi? (€/mese)</label>
+                <input type="number" class="form-input" id="peakRevenue" placeholder="Es: 15000" onchange="updateCharts()">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Dimensione team/territorio in quel periodo</label>
+                <input type="number" class="form-input" id="peakTeamSize" placeholder="Es: 8" onchange="updateCharts()">
+            </div>
 
-                    <div class="form-group">
-                        <label>Quando spieghi le strategie al team, usi principalmente: <span class="input-type">Selezione singola</span></label>
-                        <select id="communication" name="communication" required>
-                            <option value="">Seleziona la tua risposta...</option>
-                            <option value="visual">Presentazioni e grafici</option>
-                            <option value="stories">Esempi pratici e storie</option>
-                            <option value="discussion">Discussioni di gruppo</option>
-                            <option value="procedures">Procedure precise passo-passo</option>
-                        </select>
-                    </div>
+            <div class="chart-container">
+                <div class="chart-title">Confronto Performance: Picco vs Attuale</div>
+                <canvas id="performanceChart" width="400" height="200"></canvas>
+            </div>
+        </div>
 
-                    <div class="behavioral-grid" id="behavioralGrid">
-                        <div class="behavioral-card" data-type="analyzer">
-                            <h4>📊 ANALYZER</h4>
-                            <p>Decisioni basate sui dati, approccio metodico</p>
-                        </div>
-                        <div class="behavioral-card" data-type="leader">
-                            <h4>👑 LEADER</h4>
-                            <p>Guida per esempio, decisioni intuitive</p>
-                        </div>
-                        <div class="behavioral-card" data-type="supporter">
-                            <h4>🤝 SUPPORTER</h4>
-                            <p>Decisioni condivise, approccio collaborativo</p>
-                        </div>
-                        <div class="behavioral-card" data-type="organizer">
-                            <h4>⚙️ ORGANIZER</h4>
-                            <p>Sistemi e procedure, struttura organizzata</p>
-                        </div>
-                    </div>
+        <div class="section">
+            <div class="section-title">
+                <div class="section-icon">3</div>
+                Profilo Leadership - Test Comportamentale
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Un membro del team produce il 40% della media da 3 mesi. La tua reazione istintiva è:</label>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="leadership1" value="intensive" onchange="updateLeadershipProfile()">
+                        Intensifico la formazione individuale
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="leadership1" value="direct" onchange="updateLeadershipProfile()">
+                        Confronto diretto e ultimatum
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="leadership1" value="adaptive" onchange="updateLeadershipProfile()">
+                        Modifico il suo ruolo/responsabilità
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="leadership1" value="replacement" onchange="updateLeadershipProfile()">
+                        Sostituisco con nuovo elemento
+                    </label>
                 </div>
-
-                <!-- SEZIONE C: BLOCCHI NASCOSTI -->
-                <div class="section">
-                    <h2>🧠 I Tuoi Blocchi Nascosti</h2>
-                    
-                    <div class="form-group">
-                        <label>Quando pensi di affidare le tue competenze chiave ad altri, che sensazione provi? <span class="input-type">Selezione singola</span></label>
-                        <select id="delegationFeel" name="delegationFeel" required>
-                            <option value="">Seleziona la tua risposta...</option>
-                            <option value="excitement">Entusiasmo ed energia</option>
-                            <option value="control">Tensione e voglia di controllo</option>
-                            <option value="anxiety">Ansia e preoccupazione</option>
-                            <option value="neutral">Non mi cambia nulla</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Se domani il tuo team performasse al 90% del tuo livello, cosa temeresti di più? <span class="input-type">Selezione singola</span></label>
-                        <select id="successFear" name="successFear" required>
-                            <option value="">Seleziona la tua risposta...</option>
-                            <option value="control">Perdere controllo della situazione</option>
-                            <option value="relevance">Essere meno necessario/rilevante</option>
-                            <option value="management">Non riuscire a gestire la crescita</option>
-                            <option value="competition">Competizione interna al team</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Completa la frase: "La mia importanza nel team è principalmente..." <span class="input-type">Selezione singola</span></label>
-                        <select id="mainValue" name="mainValue" required>
-                            <option value="">Seleziona la tua risposta...</option>
-                            <option value="example">Essere l'esempio da seguire</option>
-                            <option value="solver">Risolvere i problemi difficili</option>
-                            <option value="motivator">Motivare e dare la carica</option>
-                            <option value="organizer">Organizzare e pianificare</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Cosa penserà tua moglie/marito se tra 1 anno sei ancora in questa situazione? <span class="input-type">Testo libero</span></label>
-                        <textarea id="familyImpact" name="familyImpact" rows="3" placeholder="Descrivi onestamente cosa potrebbe pensare o dire..." required></textarea>
-                    </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Quando spieghi strategie al team, utilizzi principalmente:</label>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="communication" value="visual" onchange="updateLeadershipProfile()">
+                        Presentazioni e grafici
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="communication" value="stories" onchange="updateLeadershipProfile()">
+                        Esempi pratici e storie
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="communication" value="discussion" onchange="updateLeadershipProfile()">
+                        Discussioni di gruppo
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="communication" value="procedures" onchange="updateLeadershipProfile()">
+                        Procedure precise step-by-step
+                    </label>
                 </div>
+            </div>
 
-                <!-- SEZIONE D: SISTEMI ATTUALI -->
-                <div class="section">
-                    <h2>⚙️ I Tuoi Sistemi Attuali</h2>
-                    
-                    <div class="form-group">
-                        <label>Attualmente come trasferisci le competenze al team? <span class="input-type">Selezione singola</span></label>
-                        <select id="trainingMethod" name="trainingMethod" required>
-                            <option value="">Seleziona la tua risposta...</option>
-                            <option value="formal">Corsi di formazione strutturati</option>
-                            <option value="individual">Coaching individuale</option>
-                            <option value="shadowing">Affiancamento e osservazione</option>
-                            <option value="trial">Prova ed errore con feedback</option>
-                        </select>
-                    </div>
+            <div class="chart-container">
+                <div class="chart-title">Il Tuo Profilo di Leadership</div>
+                <canvas id="leadershipChart" width="400" height="200"></canvas>
+            </div>
+        </div>
 
-                    <div class="form-group">
-                        <label>Come monitori le performance del team? <span class="input-type">Selezione singola</span></label>
-                        <select id="monitoring" name="monitoring" required>
-                            <option value="">Seleziona la tua risposta...</option>
-                            <option value="daily">Controllo quotidiano dei numeri</option>
-                            <option value="weekly">Riunioni settimanali</option>
-                            <option value="monthly">Verifiche mensili</option>
-                            <option value="informal">Controllo informale quando capita</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Il tuo sistema di riconoscimenti si basa su: <span class="input-type">Selezione singola</span></label>
-                        <select id="rewardSystem" name="rewardSystem" required>
-                            <option value="">Seleziona la tua risposta...</option>
-                            <option value="individual">Risultati individuali</option>
-                            <option value="team">Performance di squadra</option>
-                            <option value="improvement">Miglioramenti progressivi</option>
-                            <option value="behavior">Comportamenti specifici</option>
-                        </select>
-                    </div>
+        <div class="section">
+            <div class="section-title">
+                <div class="section-icon">4</div>
+                Urgenza e Commitment
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Urgenza di risolvere questa situazione (1-10)</label>
+                <div class="slider-container">
+                    <input type="range" min="1" max="10" value="5" class="slider" id="urgencyLevel" onchange="updateUrgency()">
+                    <div class="slider-value"><span id="urgencyValue">5</span>/10</div>
                 </div>
-                <!-- SEZIONE E: PRIORITÀ -->
-                <div class="section">
-                    <h2>🚀 Le Tue Priorità</h2>
-                    
-                    <div class="form-group">
-                        <label>Su una scala da 1 a 10, quanto è urgente sbloccare questa situazione? <span class="input-type">Clicca numero</span></label>
-                        <div class="urgency-scale">
-                            <button type="button" data-urgency="1">1</button>
-                            <button type="button" data-urgency="2">2</button>
-                            <button type="button" data-urgency="3">3</button>
-                            <button type="button" data-urgency="4">4</button>
-                            <button type="button" data-urgency="5">5</button>
-                            <button type="button" data-urgency="6">6</button>
-                            <button type="button" data-urgency="7">7</button>
-                            <button type="button" data-urgency="8">8</button>
-                            <button type="button" data-urgency="9">9</button>
-                            <button type="button" data-urgency="10">10</button>
-                        </div>
-                        <input type="hidden" id="urgency" name="urgency" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Quanto investiresti per risolvere definitivamente questo problema? <span class="input-type">Selezione singola</span></label>
-                        <select id="investment" name="investment" required>
-                            <option value="">Seleziona la tua risposta...</option>
-                            <option value="500-1000">€500-1.000</option>
-                            <option value="1000-3000">€1.000-3.000</option>
-                            <option value="3000-5000">€3.000-5.000</option>
-                            <option value="5000+">Oltre €5.000</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Tra 90 giorni, quale risultato ti farebbe dire "Ne è valsa la pena"? <span class="input-type">Testo libero</span></label>
-                        <textarea id="desiredResult" name="desiredResult" rows="4" placeholder="Descrivi in 2-3 frasi concrete quali risultati misurabili vorresti vedere..." required></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Se sotto 8: spiega perché non è più urgente <span class="input-type">Testo facoltativo</span></label>
-                        <textarea id="urgencyExplanation" name="urgencyExplanation" rows="2" placeholder="Solo se hai selezionato urgenza sotto 8, spiega il motivo..."></textarea>
-                    </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Quanto investiresti per risolvere definitivamente questo problema?</label>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="investment" value="500-1000" onchange="updateInvestment()">
+                        €500 - €1.000
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="investment" value="1000-3000" onchange="updateInvestment()">
+                        €1.000 - €3.000
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="investment" value="3000-5000" onchange="updateInvestment()">
+                        €3.000 - €5.000
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="investment" value="5000+" onchange="updateInvestment()">
+                        Oltre €5.000
+                    </label>
                 </div>
+            </div>
+        </div>
 
-                <div id="qualificationAlert" class="alert hidden"></div>
+        <div class="metrics-grid" id="metricsGrid" style="display: none;">
+            <div class="metric-card">
+                <div class="metric-value" id="opportunityCost">€0</div>
+                <div class="metric-label">Costo Opportunità Mensile</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value" id="teamEfficiency">0%</div>
+                <div class="metric-label">Efficienza Team</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value" id="growthPotential">0%</div>
+                <div class="metric-label">Potenziale di Crescita</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value" id="qualificationScore">0/100</div>
+                <div class="metric-label">Score Qualificazione</div>
+            </div>
+        </div>
 
-                <button type="button" id="submitBtn" class="submit-btn">🚀 COMPLETA L'ASSESSMENT</button>
-            </form>
+        <div id="analysisResult" class="hidden"></div>
+
+        <div class="cta-section">
+            <h2>Pronto per la Trasformazione?</h2>
+            <p>I tuoi dati mostrano un potenziale di crescita significativo. Prenota la tua sessione strategica personalizzata.</p>
+            <button class="cta-button" onclick="completeAssessment()">Invia Assessment e Prenota Sessione</button>
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <script>
-        // Funzione per inviare dati automaticamente a Google Sheets
-        function sendToGoogleSheets(formData) {
-            var googleFormURL = 'https://docs.google.com/forms/d/e/1FAIpQLSdR9m_vW8xQ2Nz7A6bK3yP5tM1cL9jF4gH8sV0/formResponse';
-            
-            var formParams = new URLSearchParams();
-            formParams.append('entry.1087894298', formData.nome || '');
-            formParams.append('entry.237674391', formData.email || '');
-            formParams.append('entry.1738496701', formData.telefono || '');
-            formParams.append('entry.372878014', formData.currentEarnings || '');
-            formParams.append('entry.1826906675', formData.peakEarnings || '');
-            formParams.append('entry.918588851', formData.stagnationMonths || '');
-            formParams.append('entry.786532982', formData.teamSize || '');
-            formParams.append('entry.1635447094', formData.activePercentage || '');
-            formParams.append('entry.1052646924', formData.decisionStyle || '');
-            formParams.append('entry.775433169', formData.underperformance || '');
-            formParams.append('entry.1945694289', formData.communication || '');
-            formParams.append('entry.1298764051', formData.delegationFeel || '');
-            formParams.append('entry.906287516', formData.successFear || '');
-            formParams.append('entry.473859012', formData.mainValue || '');
-            formParams.append('entry.1764923088', formData.familyImpact || '');
-            formParams.append('entry.582103476', formData.trainingMethod || '');
-            formParams.append('entry.1419750683', formData.monitoring || '');
-            formParams.append('entry.294816357', formData.rewardSystem || '');
-            formParams.append('entry.859142730', formData.urgency || '');
-            formParams.append('entry.1506834971', formData.investment || '');
-            formParams.append('entry.738591042', formData.desiredResult || '');
-            formParams.append('entry.1325476819', formData.urgencyExplanation || '');
-            formParams.append('entry.2047851639', formData.monthlyLoss || '');
-            formParams.append('entry.1792634058', formData.totalLoss || '');
-            formParams.append('entry.486129375', formData.projectedLoss || '');
-            formParams.append('entry.1073582194', formData.behavioralProfile || '');
-            formParams.append('entry.649307861', formData.qualificationScore || '');
-            formParams.append('entry.1851740526', new Date().toISOString());
-            
-            // Invio dati CON DEBUG COMPLETO
-            fetch(googleFormURL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: formParams
-            }).then(() => {
-                console.log('✅ Richiesta inviata - Controlla Google Sheets');
-                alert('🔧 DEBUG: Richiesta inviata a Google. Controlla il foglio Sheets in 30 secondi.');
-            }).catch(error => {
-                console.log('❌ ERRORE:', error);
-                alert('❌ ERRORE invio: ' + error.message + '\n\n📋 Dati salvati localmente.');
-                console.log('📊 DATI COMPLETI:', formData);
-            });
-        }
-
-        // Variabili globali per i grafici
-        var painChart = null;
-        var scoreChart = null;
-
-        // Crea il grafico del dolore finanziario
-        function createPainChart() {
-            var ctx = document.getElementById('painChart').getContext('2d');
-            
-            if (painChart) {
-                painChart.destroy();
-            }
-            
-            painChart = new Chart(ctx, {
-                type: 'doughnut',
+        let stagnationChart, performanceChart, leadershipChart;
+        
+        // Initialize charts
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCharts();
+            updateSliderValues();
+        });
+        
+        function initializeCharts() {
+            // Stagnation Chart
+            const stagnationCtx = document.getElementById('stagnationChart').getContext('2d');
+            stagnationChart = new Chart(stagnationCtx, {
+                type: 'line',
                 data: {
-                    labels: ['Perdita Mensile', 'Potenziale Residuo'],
+                    labels: ['6 mesi fa', '5 mesi fa', '4 mesi fa', '3 mesi fa', '2 mesi fa', '1 mese fa', 'Oggi'],
                     datasets: [{
-                        data: [0, 100],
-                        backgroundColor: ['#ffffff', 'rgba(255,255,255,0.3)'],
-                        borderWidth: 0
+                        label: 'Performance',
+                        data: [100, 100, 100, 100, 100, 100, 100],
+                        borderColor: '#ef4444',
+                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.1
                     }]
                 },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: false,
                     plugins: {
-                        legend: {
-                            display: false
-                        }
+                        legend: { display: false }
                     },
-                    cutout: '70%'
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 150,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Performance Chart
+            const performanceCtx = document.getElementById('performanceChart').getContext('2d');
+            performanceChart = new Chart(performanceCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Periodo Migliore', 'Situazione Attuale'],
+                    datasets: [
+                        {
+                            label: 'Guadagni (€)',
+                            data: [0, 0],
+                            backgroundColor: ['#10b981', '#ef4444'],
+                            borderRadius: 8
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '€' + value.toLocaleString();
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Leadership Chart
+            const leadershipCtx = document.getElementById('leadershipChart').getContext('2d');
+            leadershipChart = new Chart(leadershipCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['Coaching', 'Direttivo', 'Adattivo', 'Decisionale'],
+                    datasets: [{
+                        label: 'Stile Leadership',
+                        data: [0, 0, 0, 0],
+                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                        borderColor: '#3b82f6',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#3b82f6'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
                 }
             });
         }
-
-        // Aggiorna il grafico del dolore
-        function updatePainChart(monthlyLoss, potential) {
-            if (painChart && potential > 0) {
-                var lossPercentage = Math.min(100, (monthlyLoss / potential) * 100);
-                painChart.data.datasets[0].data = [lossPercentage, 100 - lossPercentage];
-                painChart.update();
-            }
+        
+        function updateSliderValues() {
+            document.getElementById('stagnationValue').textContent = document.getElementById('stagnationMonths').value;
+            document.getElementById('urgencyValue').textContent = document.getElementById('urgencyLevel').value;
         }
-
-        // Determina il profilo comportamentale
-        function updateBehavioralProfile() {
-            var decisionStyle = document.getElementById('decisionStyle').value;
-            var communication = document.getElementById('communication').value;
-            var mainValue = document.getElementById('mainValue').value;
+        
+        function updateCharts() {
+            const currentRevenue = parseFloat(document.getElementById('currentRevenue').value) || 0;
+            const peakRevenue = parseFloat(document.getElementById('peakRevenue').value) || 0;
+            const teamSize = parseInt(document.getElementById('teamSize').value) || 0;
+            const teamRevenue = parseFloat(document.getElementById('teamRevenue').value) || 0;
+            const stagnationMonths = parseInt(document.getElementById('stagnationMonths').value) || 6;
             
-            var cards = document.querySelectorAll('.behavioral-card');
-            cards.forEach(function(card) {
-                card.classList.remove('active');
-            });
-            
-            var profileType = '';
-            
-            if (decisionStyle === 'data' && (communication === 'visual' || mainValue === 'solver')) {
-                profileType = 'analyzer';
-            } else if (decisionStyle === 'intuition' && (communication === 'stories' || mainValue === 'example')) {
-                profileType = 'leader';
-            } else if (decisionStyle === 'consensus' && (communication === 'discussion' || mainValue === 'motivator')) {
-                profileType = 'supporter';
-            } else if (mainValue === 'organizer' || communication === 'procedures') {
-                profileType = 'organizer';
+            // Update performance chart
+            if (performanceChart) {
+                performanceChart.data.datasets[0].data = [peakRevenue, currentRevenue];
+                performanceChart.update();
             }
             
-            if (profileType) {
-                var activeCard = document.querySelector('.behavioral-card[data-type="' + profileType + '"]');
-                if (activeCard) {
-                    activeCard.classList.add('active');
+            // Calculate and show metrics
+            if (currentRevenue > 0 && peakRevenue > 0) {
+                document.getElementById('metricsGrid').style.display = 'grid';
+                
+                const opportunityCost = peakRevenue - currentRevenue;
+                const teamEfficiency = teamSize > 0 ? Math.round((teamRevenue / teamSize / 1000) * 10) : 0;
+                const growthPotential = currentRevenue > 0 ? Math.round(((peakRevenue - currentRevenue) / currentRevenue) * 100) : 0;
+                
+                document.getElementById('opportunityCost').textContent = '€' + opportunityCost.toLocaleString();
+                document.getElementById('teamEfficiency').textContent = teamEfficiency + '%';
+                document.getElementById('growthPotential').textContent = growthPotential + '%';
+                
+                // Show analysis based on data
+                showAnalysis(opportunityCost, growthPotential, stagnationMonths);
+            }
+            
+            updateSliderValues();
+        }
+        
+        function updateLeadershipProfile() {
+            const leadership1 = document.querySelector('input[name="leadership1"]:checked')?.value;
+            const communication = document.querySelector('input[name="communication"]:checked')?.value;
+            
+            if (leadership1 && communication) {
+                let coaching = 0, directive = 0, adaptive = 0, decisional = 0;
+                
+                // Leadership style scoring
+                switch(leadership1) {
+                    case 'intensive': coaching = 80; break;
+                    case 'direct': directive = 90; break;
+                    case 'adaptive': adaptive = 85; break;
+                    case 'replacement': decisional = 95; break;
+                }
+                
+                switch(communication) {
+                    case 'visual': decisional += 20; break;
+                    case 'stories': coaching += 20; break;
+                    case 'discussion': adaptive += 20; break;
+                    case 'procedures': directive += 20; break;
+                }
+                
+                if (leadershipChart) {
+                    leadershipChart.data.datasets[0].data = [coaching, directive, adaptive, decisional];
+                    leadershipChart.update();
                 }
             }
             
-            return profileType;
-        }
-
-        // Calcola il dolore finanziario
-        function calculatePain() {
-            var current = parseFloat(document.getElementById('currentEarnings').value) || 0;
-            var peak = parseFloat(document.getElementById('peakEarnings').value) || 0;
-            var months = parseInt(document.getElementById('stagnationMonths').value) || 0;
-            
-            var monthlyLoss = Math.max(0, (peak - current) / 12);
-            var totalLoss = monthlyLoss * months;
-            var projectedLoss = monthlyLoss * 12;
-            
-            document.getElementById('monthlyLoss').textContent = Math.round(monthlyLoss).toLocaleString('it-IT');
-            document.getElementById('totalLoss').textContent = Math.round(totalLoss).toLocaleString('it-IT');
-            document.getElementById('projectedLoss').textContent = Math.round(projectedLoss).toLocaleString('it-IT');
-            
-            // Aggiorna grafico
-            updatePainChart(monthlyLoss, peak / 12);
-        }
-
-        // Calcola lo score di qualificazione
-        function calculateScore() {
-            var urgency = parseInt(document.getElementById('urgency').value) || 0;
-            var investment = document.getElementById('investment').value;
-            var current = parseFloat(document.getElementById('currentEarnings').value) || 0;
-            var months = parseInt(document.getElementById('stagnationMonths').value) || 0;
-            
-            var investmentScore = 0;
-            if (investment === '500-1000') investmentScore = 5;
-            if (investment === '1000-3000') investmentScore = 7;
-            if (investment === '3000-5000') investmentScore = 9;
-            if (investment === '5000+') investmentScore = 10;
-            
-            var painScore = Math.min(10, months / 2);
-            var earningsScore = Math.min(10, current / 5000);
-            
-            // Bonus per completezza profilo
-            var profileBonus = 0;
-            if (document.getElementById('decisionStyle').value) profileBonus += 0.5;
-            if (document.getElementById('mainValue').value) profileBonus += 0.5;
-            if (document.getElementById('delegationFeel').value) profileBonus += 0.5;
-            
-            var totalScore = (urgency * 0.35) + (investmentScore * 0.25) + (painScore * 0.2) + 
-                            (earningsScore * 0.1) + (profileBonus * 0.1);
-            
-            return Math.round(totalScore);
-        }
-
-        // Mostra il report finale con grafico score
-        function showReport(score) {
-            console.log("showReport chiamata con score:", score);
-            
-            var alertDiv = document.getElementById('qualificationAlert');
-            
-            // FORZA LA VISUALIZZAZIONE
-            alertDiv.classList.remove('hidden');
-            alertDiv.classList.add('show-report');
-            alertDiv.style.display = 'block';
-            alertDiv.style.visibility = 'visible';
-            alertDiv.style.opacity = '1';
-            
-            var currentEarnings = parseFloat(document.getElementById('currentEarnings').value) || 0;
-            var peakEarnings = parseFloat(document.getElementById('peakEarnings').value) || 0;
-            var monthlyLoss = Math.max(0, (peakEarnings - currentEarnings) / 12);
-            var teamSize = parseInt(document.getElementById('teamSize').value) || 0;
-            var activePercentage = parseInt(document.getElementById('activePercentage').value) || 0;
-            
-            // Determina profilo comportamentale
-            var profileType = updateBehavioralProfile();
-            var profileNames = {
-                'analyzer': 'ANALYZER - Controller Orientato ai Dati',
-                'leader': 'LEADER - Guidatore per Esempio', 
-                'supporter': 'SUPPORTER - Facilitatore di Team',
-                'organizer': 'ORGANIZER - Sistemista Strutturato'
-            };
-            var profileName = profileNames[profileType] || 'Profilo Misto';
-            
-            var reportContent = '';
-            var scoreClass = score >= 8 ? 'score-high' : (score >= 6 ? 'score-medium' : 'score-low');
-            
-            if (score >= 8) {
-                alertDiv.className = 'alert alert-success show-report';
-                reportContent = '<div class="score-visual ' + scoreClass + '">' + score + '/10</div>' +
-                    '<strong>🎯 PROFILO ALTO POTENZIALE</strong><br><br>' +
-                    '<strong>ANALISI DETTAGLIATA:</strong><br>' +
-                    '• Perdita mensile: €' + Math.round(monthlyLoss).toLocaleString('it-IT') + '<br>' +
-                    '• Team attivo: ' + Math.round((teamSize * activePercentage) / 100) + ' persone su ' + teamSize + '<br>' +
-                    '• Profilo comportamentale: ' + profileName + '<br>' +
-                    '• Probabilità successo: >85%<br><br>' +
-                    '<strong>RACCOMANDAZIONE:</strong> Candidato ideale per il programma completo. Procedi immediatamente con percorso intensivo.';
-            } else if (score >= 6) {
-                alertDiv.className = 'alert alert-warning show-report';
-                reportContent = '<div class="score-visual ' + scoreClass + '">' + score + '/10</div>' +
-                    '<strong>⚠️ PROFILO MEDIO POTENZIALE</strong><br><br>' +
-                    '<strong>ANALISI DETTAGLIATA:</strong><br>' +
-                    '• Perdita mensile: €' + Math.round(monthlyLoss).toLocaleString('it-IT') + '<br>' +
-                    '• Team attivo: ' + Math.round((teamSize * activePercentage) / 100) + ' persone su ' + teamSize + '<br>' +
-                    '• Profilo comportamentale: ' + profileName + '<br>' +
-                    '• Probabilità successo: 65-75%<br><br>' +
-                    '<strong>RACCOMANDAZIONE:</strong> Buone possibilità con approccio graduale. Inizia con programma base.';
-            } else {
-                alertDiv.className = 'alert alert-danger show-report';
-                reportContent = '<div class="score-visual ' + scoreClass + '">' + score + '/10</div>' +
-                    '<strong>🚨 PROFILO BASSO POTENZIALE</strong><br><br>' +
-                    '<strong>ANALISI DETTAGLIATA:</strong><br>' +
-                    '• Perdita mensile: €' + Math.round(monthlyLoss).toLocaleString('it-IT') + '<br>' +
-                    '• Team attivo: ' + Math.round((teamSize * activePercentage) / 100) + ' persone su ' + teamSize + '<br>' +
-                    '• Profilo comportamentale: ' + profileName + '<br>' +
-                    '• Probabilità successo: <50%<br><br>' +
-                    '<strong>RACCOMANDAZIONE:</strong> Timing non ottimale. Rivaluta urgenza o inizia con consulenza preliminare.';
-            }
-            
-            alertDiv.innerHTML = reportContent;
-            
-            // Scroll verso il report
-            setTimeout(function() {
-                alertDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, 100);
-        }
-        // Calcola lo score di qualificazione
-        function calculateScore() {
-            var urgency = parseInt(document.getElementById('urgency').value) || 0;
-            var investment = document.getElementById('investment').value;
-            var current = parseFloat(document.getElementById('currentEarnings').value) || 0;
-            var months = parseInt(document.getElementById('stagnationMonths').value) || 0;
-            
-            var investmentScore = 0;
-            if (investment === '500-1000') investmentScore = 5;
-            if (investment === '1000-3000') investmentScore = 7;
-            if (investment === '3000-5000') investmentScore = 9;
-            if (investment === '5000+') investmentScore = 10;
-            
-            var painScore = Math.min(10, months / 2);
-            var earningsScore = Math.min(10, current / 5000);
-            
-            // Bonus per completezza profilo
-            var profileBonus = 0;
-            if (document.getElementById('decisionStyle').value) profileBonus += 0.5;
-            if (document.getElementById('mainValue').value) profileBonus += 0.5;
-            if (document.getElementById('delegationFeel').value) profileBonus += 0.5;
-            
-            var totalScore = (urgency * 0.35) + (investmentScore * 0.25) + (painScore * 0.2) + 
-                            (earningsScore * 0.1) + (profileBonus * 0.1);
-            
-            return Math.round(totalScore);
-        }
-
-        // Mostra il report finale - VERSIONE FORZATA
-        function showReport(score) {
-            console.log("showReport chiamata con score:", score);
-            
-            var alertDiv = document.getElementById('qualificationAlert');
-            console.log("alertDiv trovato:", alertDiv);
-            
-            // FORZA LA VISUALIZZAZIONE IN TUTTI I MODI POSSIBILI
-            alertDiv.classList.remove('hidden');
-            alertDiv.classList.add('show-report');
-            alertDiv.style.display = 'block';
-            alertDiv.style.visibility = 'visible';
-            alertDiv.style.opacity = '1';
-            
-            var currentEarnings = parseFloat(document.getElementById('currentEarnings').value) || 0;
-            var peakEarnings = parseFloat(document.getElementById('peakEarnings').value) || 0;
-            var monthlyLoss = Math.max(0, (peakEarnings - currentEarnings) / 12);
-            
-            console.log("Dati calcolati:", currentEarnings, peakEarnings, monthlyLoss);
-            
-            var reportContent = '';
-            
-            if (score >= 8) {
-                alertDiv.className = 'alert alert-success show-report';
-                reportContent = '<strong>🎯 PROFILO ALTO POTENZIALE (Score: ' + score + '/10)</strong><br><br>' +
-                    '<strong>ANALISI SITUAZIONE:</strong><br>' +
-                    '• Perdita mensile stimata: €' + Math.round(monthlyLoss).toLocaleString('it-IT') + '<br>' +
-                    '• Status: Candidato ideale per programma completo<br>' +
-                    '• Probabilità successo: >85%<br><br>' +
-                    '<strong>RACCOMANDAZIONE:</strong> Procedi immediatamente con il percorso intensivo.';
-            } else if (score >= 6) {
-                alertDiv.className = 'alert alert-warning show-report';
-                reportContent = '<strong>⚠️ PROFILO MEDIO POTENZIALE (Score: ' + score + '/10)</strong><br><br>' +
-                    '<strong>ANALISI SITUAZIONE:</strong><br>' +
-                    '• Perdita mensile stimata: €' + Math.round(monthlyLoss).toLocaleString('it-IT') + '<br>' +
-                    '• Status: Buone possibilità con approccio graduale<br>' +
-                    '• Probabilità successo: 65-75%<br><br>' +
-                    '<strong>RACCOMANDAZIONE:</strong> Inizia con programma base, poi valuta upgrade.';
-            } else {
-                alertDiv.className = 'alert alert-danger show-report';
-                reportContent = '<strong>🚨 PROFILO BASSO POTENZIALE (Score: ' + score + '/10)</strong><br><br>' +
-                    '<strong>ANALISI SITUAZIONE:</strong><br>' +
-                    '• Perdita mensile stimata: €' + Math.round(monthlyLoss).toLocaleString('it-IT') + '<br>' +
-                    '• Status: Timing non ottimale per percorso intensivo<br>' +
-                    '• Probabilità successo: <50%<br><br>' +
-                    '<strong>RACCOMANDAZIONE:</strong> Rivaluta urgenza e investimento, oppure consulenza preliminare.';
-            }
-            
-            alertDiv.innerHTML = reportContent;
-            
-            console.log("Report impostato, contenuto:", reportContent);
-            console.log("Stili applicati:", alertDiv.className);
-            console.log("Display style:", alertDiv.style.display);
-            
-            // Scroll verso il report
-            setTimeout(function() {
-                alertDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, 100);
-        }
-
-        // Avvia tutto quando la pagina è carica
-        window.onload = function() {
-            // Event listener per calcolo automatico
-            document.getElementById('currentEarnings').addEventListener('input', calculatePain);
-            document.getElementById('peakEarnings').addEventListener('input', calculatePain);
-            document.getElementById('stagnationMonths').addEventListener('input', calculatePain);
-            
-            // Event listener per scala urgenza
-            var urgencyButtons = document.querySelectorAll('.urgency-scale button');
-            for (var i = 0; i < urgencyButtons.length; i++) {
-                urgencyButtons[i].addEventListener('click', function(e) {
-                    e.preventDefault();
-                    var value = this.getAttribute('data-urgency');
-                    document.getElementById('urgency').value = value;
-                    
-                    // Aggiorna visual
-                    var allButtons = document.querySelectorAll('.urgency-scale button');
-                    for (var j = 0; j < allButtons.length; j++) {
-                        allButtons[j].classList.remove('active');
-                    }
-                    for (var k = 0; k < parseInt(value); k++) {
-                        allButtons[k].classList.add('active');
-                    }
-                });
-            }
-            
-            // Event listener per profilo comportamentale
-            var behavioralSelects = ['decisionStyle', 'communication', 'mainValue'];
-            behavioralSelects.forEach(function(selectId) {
-                document.getElementById(selectId).addEventListener('change', updateBehavioralProfile);
-            });
-            
-            // Inizializza grafico dolore
-            createPainChart();
-            
-            // Event listener per submit - SENZA FORM SUBMISSION
-            document.getElementById('submitBtn').addEventListener('click', function() {
-                console.log("Button click attivato");
-                
-                if (!document.getElementById('urgency').value) {
-                    alert('⚠️ Seleziona il livello di urgenza prima di continuare');
-                    return;
-                }
-                
-                // Verifica campi obbligatori
-                var requiredFields = [
-                    'currentEarnings', 'peakEarnings', 'stagnationMonths', 'teamSize', 'activePercentage',
-                    'decisionStyle', 'underperformance', 'communication', 
-                    'delegationFeel', 'successFear', 'mainValue', 'familyImpact',
-                    'trainingMethod', 'monitoring', 'rewardSystem',
-                    'investment', 'desiredResult'
-                ];
-                
-                var missingFields = [];
-                requiredFields.forEach(function(fieldId) {
-                    var field = document.getElementById(fieldId);
-                    if (!field.value || field.value.trim() === '') {
-                        var label = field.previousElementSibling.textContent.split('Numero')[0].split('Selezione')[0].split('Testo')[0];
-                        missingFields.push(label.trim());
-                    }
-                });
-                
-                if (missingFields.length > 0) {
-                    alert('⚠️ Compila tutti i campi obbligatori prima di continuare:\n\n• ' + missingFields.slice(0, 5).join('\n• ') + 
-                          (missingFields.length > 5 ? '\n• ... e altri ' + (missingFields.length - 5) + ' campi' : ''));
-                    return;
-                }
-                
-                var score = calculateScore();
-                console.log("Score calcolato:", score);
-                
-                showReport(score);
-                
-                // Raccogli tutti i dati per analisi
-                var formData = {
-                    // Dati anagrafici (richiesti automaticamente)
-                    nome: prompt('👤 Nome e Cognome:', '') || 'Non specificato',
-                    email: prompt('📧 Email:', '') || 'Non specificato', 
-                    telefono: prompt('📱 Telefono:', '') || 'Non specificato',
-                    
-                    // Dati numerici
-                    currentEarnings: document.getElementById('currentEarnings').value,
-                    peakEarnings: document.getElementById('peakEarnings').value,
-                    stagnationMonths: document.getElementById('stagnationMonths').value,
-                    teamSize: document.getElementById('teamSize').value,
-                    activePercentage: document.getElementById('activePercentage').value,
-                    
-                    // Profilo leadership
-                    decisionStyle: document.getElementById('decisionStyle').value,
-                    underperformance: document.getElementById('underperformance').value,
-                    communication: document.getElementById('communication').value,
-                    
-                    // Blocchi nascosti
-                    delegationFeel: document.getElementById('delegationFeel').value,
-                    successFear: document.getElementById('successFear').value,
-                    mainValue: document.getElementById('mainValue').value,
-                    familyImpact: document.getElementById('familyImpact').value,
-                    
-                    // Sistemi attuali
-                    trainingMethod: document.getElementById('trainingMethod').value,
-                    monitoring: document.getElementById('monitoring').value,
-                    rewardSystem: document.getElementById('rewardSystem').value,
-                    
-                    // Priorità
-                    urgency: document.getElementById('urgency').value,
-                    investment: document.getElementById('investment').value,
-                    desiredResult: document.getElementById('desiredResult').value,
-                    urgencyExplanation: document.getElementById('urgencyExplanation').value,
-                    
-                    // Dati calcolati
-                    qualificationScore: score,
-                    monthlyLoss: document.getElementById('monthlyLoss').textContent,
-                    totalLoss: document.getElementById('totalLoss').textContent,
-                    projectedLoss: document.getElementById('projectedLoss').textContent,
-                    behavioralProfile: updateBehavioralProfile(),
-                    submittedAt: new Date().toISOString()
-                };
-                
-                console.log('Dati completi assessment:', formData);
-                
-                // SOLUZIONI ALTERNATIVE GARANTITE
-                var formattedData = createFormattedData(formData);
-                var emailData = createEmailData(formData);
-                
-                // Mostra opzioni all'utente
-                var userChoice = confirm(
-                    '✅ ASSESSMENT COMPLETATO!\n\n' +
-                    '📊 Score: ' + score + '/10\n' +
-                    '🎯 Profilo: ' + (formData.behavioralProfile || 'MISTO') + '\n\n' +
-                    '📋 SCEGLI COME SALVARE I DATI:\n\n' +
-                    '✅ OK = Copia dati per Google Sheets\n' +
-                    '❌ ANNULLA = Apri email precompilata'
-                );
-                
-                if (userChoice) {
-                    // Opzione 1: Copia-incolla per Google Sheets
-                    if (navigator.clipboard) {
-                        navigator.clipboard.writeText(formattedData).then(function() {
-                            alert('📋 DATI COPIATI!\n\n' +
-                                  '1. Apri il tuo Google Sheets\n' +
-                                  '2. Seleziona la prima cella vuota\n' +
-                                  '3. Premi Ctrl+V (o Cmd+V)\n' +
-                                  '4. I dati si incolleranno automaticamente!\n\n' +
-                                  '✅ Score cliente: ' + score + '/10');
-                        }).catch(function() {
-                            showDataInNewWindow(formattedData, score);
-                        });
-                    } else {
-                        showDataInNewWindow(formattedData, score);
-                    }
+            // Update radio visual feedback
+            document.querySelectorAll('.radio-option').forEach(option => {
+                const radio = option.querySelector('input[type="radio"]');
+                if (radio.checked) {
+                    option.classList.add('selected');
                 } else {
-                    // Opzione 2: Email precompilata
-                    var mailtoLink = 'mailto:?subject=' + encodeURIComponent(emailData.subject) + 
-                                   '&body=' + encodeURIComponent(emailData.body);
-                    window.open(mailtoLink);
-                    alert('📧 EMAIL PRECOMPILATA APERTA!\n\n' +
-                          'Aggiungi il tuo indirizzo email e invia.\n' +
-                          'Tutti i dati del prospect sono già formattati!');
+                    option.classList.remove('selected');
                 }
-                
-                // Funzione di fallback per mostrare dati
-                function showDataInNewWindow(data, score) {
-                    var dataWindow = window.open('', '_blank', 'width=800,height=600');
-                    dataWindow.document.write(`
-                        <h2>📋 DATI PROSPECT - Score: ${score}/10</h2>
-                        <p><strong>Istruzioni:</strong></p>
-                        <ol>
-                            <li>Seleziona tutto il testo nel box sotto</li>
-                            <li>Copia (Ctrl+C)</li>
-                            <li>Vai al tuo Google Sheets</li>
-                            <li>Incolla (Ctrl+V) in una cella vuota</li>
-                        </ol>
-                        <textarea style="width:100%;height:400px; font-family:monospace;">${data}</textarea>
-                        <p><em>I dati sono separati da TAB per allineamento automatico nelle colonne.</em></p>
-                    `);
-                }
-                
-                // Alert di conferma
-                setTimeout(function() {
-                    alert('✅ ASSESSMENT COMPLETATO CON SUCCESSO!\n\n' +
-                          '📊 Score di Qualificazione: ' + score + '/10\n' +
-                          '🎯 Profilo Comportamentale: ' + (formData.behavioralProfile ? formData.behavioralProfile.toUpperCase() : 'MISTO') + '\n' +
-                          '💰 Perdita Mensile: €' + formData.monthlyLoss + '\n\n' +
-                          '✅ I tuoi dati sono stati salvati automaticamente!\n' +
-                          'Sarai ricontattato entro 24 ore per programmare la sessione strategica.');
-                }, 2000);
             });
-        };
+        }
+        
+        function updateUrgency() {
+            updateSliderValues();
+            calculateQualificationScore();
+        }
+        
+        function updateInvestment() {
+            document.querySelectorAll('.radio-option').forEach(option => {
+                const radio = option.querySelector('input[type="radio"]');
+                if (radio.checked) {
+                    option.classList.add('selected');
+                } else {
+                    option.classList.remove('selected');
+                }
+            });
+            calculateQualificationScore();
+        }
+        
+        function calculateQualificationScore() {
+            const urgency = parseInt(document.getElementById('urgencyLevel').value);
+            const investment = document.querySelector('input[name="investment"]:checked')?.value;
+            const currentRevenue = parseFloat(document.getElementById('currentRevenue').value) || 0;
+            
+            let score = urgency * 10; // Base score from urgency
+            
+            if (investment) {
+                switch(investment) {
+                    case '500-1000': score += 10; break;
+                    case '1000-3000': score += 20; break;
+                    case '3000-5000': score += 30; break;
+                    case '5000+': score += 40; break;
+                }
+            }
+            
+            if (currentRevenue > 5000) score += 10;
+            if (currentRevenue > 10000) score += 20;
+            
+            document.getElementById('qualificationScore').textContent = Math.min(score, 100) + '/100';
+        }
+        
+        function showAnalysis(opportunityCost, growthPotential, stagnationMonths) {
+            const analysisDiv = document.getElementById('analysisResult');
+            analysisDiv.classList.remove('hidden');
+            
+            let analysisHTML = '';
+            
+            if (opportunityCost > 3000) {
+                analysisHTML += '<div class="warning">⚠️ <strong>ALERT:</strong> Stai perdendo oltre €3.000/mese. Costo annuale: €' + (opportunityCost * 12).toLocaleString() + '</div>';
+            }
+            
+            if (stagnationMonths > 6) {
+                analysisHTML += '<div class="warning">📈 <strong>STAGNAZIONE CRITICA:</strong> ' + stagnationMonths + ' mesi senza crescita indicano blocchi sistemici profondi.</div>';
+            }
+            
+            if (growthPotential > 50) {
+                analysisHTML += '<div class="success">🚀 <strong>POTENZIALE ALTO:</strong> ' + growthPotential + '% di crescita possibile. Hai già dimostrato di poter fare di più.</div>';
+            }
+            
+            analysisDiv.innerHTML = analysisHTML;
+        }
+        
+        function completeAssessment() {
+            // Collect all data
+            const assessmentData = {
+                currentRevenue: document.getElementById('currentRevenue').value,
+                teamRevenue: document.getElementById('teamRevenue').value,
+                teamSize: document.getElementById('teamSize').value,
+                stagnationMonths: document.getElementById('stagnationMonths').value,
+                peakRevenue: document.getElementById('peakRevenue').value,
+                peakTeamSize: document.getElementById('peakTeamSize').value,
+                leadership1: document.querySelector('input[name="leadership1"]:checked')?.value,
+                communication: document.querySelector('input[name="communication"]:checked')?.value,
+                urgency: document.getElementById('urgencyLevel').value,
+                investment: document.querySelector('input[name="investment"]:checked')?.value,
+                timestamp: new Date().toISOString()
+            };
+            
+            // In a real implementation, this would send data to your backend
+            console.log('Assessment Data:', assessmentData);
+            
+            alert('Assessment completato! Sarai ricontattato entro 24 ore per programmare la tua sessione strategica personalizzata.');
+        }
+        
+        // Add event listeners for slider updates
+        document.getElementById('stagnationMonths').addEventListener('input', updateSliderValues);
+        document.getElementById('urgencyLevel').addEventListener('input', updateSliderValues);
     </script>
 </body>
 </html>
